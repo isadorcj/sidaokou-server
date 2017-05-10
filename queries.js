@@ -14,6 +14,9 @@ var db = pgp(connectionString);
 module.exports = {
   getAllStoreNames: getAllStoreNames,
   getSingleStore: getSingleStore,
+  createStore: createStore,
+  updateStore: updateStore,
+  removeStore: removeStore,
   createItem: createItem,
   updateItem: updateItem,
   removeItem: removeItem
