@@ -9,9 +9,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/api/stores', db.getAllStoreNames);
-router.get('/api/stores/:id', db.getSingleStore);
+router.get('/api/stores/:id&:second', db.getSingleStore);
 router.post('/api/stores', db.createStore);
 router.put('/api/stores/:id', db.updateStore);
 router.delete('/api/stores/:id', db.removeStore);
+router.post('/api/postsample', db.printPostSample);
+router.get('/api/getsample', db.printGetSample)
 
 module.exports = router;

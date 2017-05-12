@@ -1,5 +1,5 @@
 var promise = require('bluebird');
-var StoreForDisplay = require('./models/store_for_display.js');
+var StoreProcessor = require('./processors/StoreProcessor.js');
 
 var options = {
   // Initialization Options
@@ -7,7 +7,6 @@ var options = {
 };
 
 var pgp = require('pg-promise')(options);
-// var connectionString = 'postgres://192.168.2.28:5432/ottawafood';
 var db = pgp({
     host: '192.168.2.28',
     port: 5432,
@@ -23,34 +22,34 @@ module.exports = {
   getSingleStore: getSingleStore,
   createStore: createStore,
   updateStore: updateStore,
-  removeStore: removeStore
+  removeStore: removeStore,
+  printPostSample: printPostSample,
+  printGetSample: printGetSample
 };
 
+function printGetSample(req, res, next) {
+    process.stdout.write("hello: " + req.query.name + " ");
+        res.status(200)
+                .json({
+                  status: 'success',
+                  data: req.query.name,
+                  message: 'print sample'
+                });
+}
+
+function printPostSample(req, res, next) {
+    var body = req.body.name;
+    var query = req.query.id;
+    process.stdout.write("hello: " + body + " ");
+    
+}
+
 function getAllStoreNames(req, res, next){
-	db.any('select * from stores')
-		.then(function (data) {
-            
-            var retVal = [];
-            data.forEach(function(entry){
-                var newStore = new StoreForDisplay(entry.id, entry.name);
-                var display = entry.name;
-                retVal.push(newStore);
-            });
-
-
-			res.status(200)
-			.json({
-				status: 'success',
-				sotre_data: retVal,
-                message: 'Retrieved ALL stores'
-			})
-        }).catch(function (err) {
-                return next(err);
-            });
+    StoreProcessor.getAllStoreNames(db, req, res, next);
 }
 
 function getSingleStore(req, res, next){
-
+    StoreProcessor.getSingleStore(db, req, res, next);
 }
 
 function createStore(req, res, next){
