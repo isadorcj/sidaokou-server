@@ -41,7 +41,7 @@ function printPostSample(req, res, next) {
     var body = req.body.name;
     var query = req.query.id;
     process.stdout.write("hello: " + body + " ");
-    
+
 }
 
 function getAllStoreNames(req, res, next){
